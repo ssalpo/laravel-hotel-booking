@@ -1,0 +1,647 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api документация проекта",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация",
+                "description": "Авторизация",
+                "operationId": "dd51a484b7fa0f97c7680fdbde14cf5f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Запрос обработан"
+                    },
+                    "401": {
+                        "description": "Ошибка проверки данных пользователя"
+                    },
+                    "419": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Производит выход из системы",
+                "description": "Производит выход из системы",
+                "operationId": "df9bdc6c7a6d9f20b983526b2ec0f698",
+                "responses": {
+                    "201": {
+                        "description": "Запрос обработан"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Возвращает обновленный токен",
+                "description": "Возвращает обновленный токен",
+                "operationId": "30c20c52f5f72828d8c531fd7c9ea3e7",
+                "responses": {
+                    "201": {
+                        "description": "Запрос обработан"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/profile": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Возвращает данные профиля",
+                "description": "Возвращает данные профиля",
+                "operationId": "b1eb3bba5d25e3becff8e61e26215556",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/bookings": {
+            "get": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Возвращает список всех бронирований",
+                "description": "Возвращает список всех бронирований",
+                "operationId": "4535e967ef15bc76dadf1efa40192f0d",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "10"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "1=CONFIRMED, 2=CANCELED, 3=RESERVED",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookingCollectionResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Создает новую бронь",
+                "description": "Создает новую бронь",
+                "operationId": "43e6dcca842886074084b8db86af7802",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BookingRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookingResource"
+                                }
+                            }
+                        }
+                    },
+                    "419": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/bookings/{booking}": {
+            "get": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Получает бронь по ID",
+                "description": "Получает бронь по ID",
+                "operationId": "65258f4a04829afc503334b30421ad4f",
+                "parameters": [
+                    {
+                        "name": "booking",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookingResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Брон не найдена"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Обновляет бронь",
+                "description": "Обновляет бронь",
+                "operationId": "3c2a7a71f0168b95dc25ae8727e44d31",
+                "parameters": [
+                    {
+                        "name": "booking",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BookingRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookingResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Удаляет бронь",
+                "description": "Удаляет бронь",
+                "operationId": "dd0cd74ecc75a87121ba3e03ee226677",
+                "parameters": [
+                    {
+                        "name": "booking",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/bookings/{booking}/change-status": {
+            "post": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Меняет статус бронирования",
+                "description": "Меняет статус бронирования",
+                "operationId": "55df63117acee1804f7fcb55814db025",
+                "parameters": [
+                    {
+                        "name": "booking",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "description": "1=CONFIRMED, 2=CANCELED, 3=RESERVED",
+                                        "required": [
+                                            "status"
+                                        ],
+                                        "type": "string",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookingResource"
+                                }
+                            }
+                        }
+                    },
+                    "419": {
+                        "description": "Ошибка валидации"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/rooms": {
+            "get": {
+                "tags": [
+                    "Rooms"
+                ],
+                "summary": "Возвращает список всех номеров",
+                "description": "Список номеров",
+                "operationId": "db2a0f9c242ba089e87d5ae1fa8e14c5",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RoomCollectionResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Возвращает список всех пользователей",
+                "description": "Список всех пользователей",
+                "operationId": "566aed8efb436ca506e0ef51a032ecd9",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserCollectionResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{user}/bookings": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Список бронирований по ID пользователя",
+                "description": "Список бронирований по ID пользователя",
+                "operationId": "468adb64629031b9a0c7bdff7cf730ff",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "10"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "1=CONFIRMED, 2=CANCELED, 3=RESERVED",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookingCollectionResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BookingCollectionResource": {
+                "title": "Booking collection resource",
+                "properties": {
+                    "data": {
+                        "title": "array",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BookingResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "BookingRequest": {
+                "title": "Booking request",
+                "properties": {
+                    "room_id": {
+                        "title": "room_id",
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "user_id": {
+                        "title": "user_id",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "check_in": {
+                        "title": "check_in",
+                        "type": "string",
+                        "format": "date",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "BookingResource": {
+                "title": "Booking resource",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer"
+                    },
+                    "room": {
+                        "title": "room",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "user": {
+                        "title": "user",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "check_in": {
+                        "title": "check_in",
+                        "type": "string",
+                        "format": "date",
+                        "nullable": false
+                    },
+                    "created_at": {
+                        "title": "created_at",
+                        "type": "string",
+                        "format": "date",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "RoomCollectionResource": {
+                "title": "Room collection resource",
+                "properties": {
+                    "data": {
+                        "title": "array",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RoomResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "RoomResource": {
+                "title": "Room resource",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer"
+                    },
+                    "number": {
+                        "title": "number",
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "price_per_night": {
+                        "title": "price_per_night",
+                        "type": "integer",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "LoginRequest": {
+                "title": "Login request",
+                "properties": {
+                    "email": {
+                        "title": "email",
+                        "type": "string",
+                        "example": "user1@gmail.com",
+                        "nullable": false
+                    },
+                    "password": {
+                        "title": "password",
+                        "type": "string",
+                        "example": "secret",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "UserCollectionResource": {
+                "title": "Room collection resource",
+                "properties": {
+                    "data": {
+                        "title": "array",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "title": "User resource",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "email": {
+                        "title": "email",
+                        "type": "string",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Login with email and password to get the authentication token",
+                "name": "Token based Based",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
